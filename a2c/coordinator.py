@@ -80,10 +80,6 @@ class Coordinator():
             total_rewards_list.append(total_reward)
         '''
 
-        #compute rewards to go
-        #import ipdb
-        #ipdb.set_trace()
-
         for k in self.rewards.keys():
             r = np.array(self.rewards[k])
             episode_length = len(r)
