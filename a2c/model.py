@@ -24,7 +24,7 @@ class PolicyNet(nn.Module):
         self.output_activation = output_activation
         
     def forward(self, inp):
-        out = inp
+        out = inp.reshape(inp.shape[0], -1)
         for layer in self.layer_list:
             out = layer(out)
             out = self.activation(out)
