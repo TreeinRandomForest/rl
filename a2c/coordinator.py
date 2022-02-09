@@ -80,11 +80,26 @@ class Coordinator():
             total_rewards_list.append(total_reward)
         '''
 
-        for k in self.rewards.keys():
+        '''
+        TODO:
+        1. Simple baseline
+            Consider per-trajectory rewards, R_k (discounting/no discounting, to-go/full)
+            Subtract exponential moving averages (computed from per-trajectory rewards above)
+
+        2. Train value-function:
+            For each batch, collect tuples: (s, reward-to-go from s)
+            Use previous network for current update
+            Update V with new data: how many iterations? MSE criterion?
+
+        3. Full actor-critic: replace MC estimate with Q-function
+
+        '''
+
+        for k in self.rewards.keys(): #loop over trajectories
             r = np.array(self.rewards[k])
             episode_length = len(r)
 
-            r_to_go = torch.tensor([np.sum(r[t:] * self.gamma**(np.arange(episode_length-t))) for t in range(episode_length)])
+            r_to_go = torch.tensor([np.sum(r[t:] * self.gamma**(np.arange(episode_length-t))) for t in range(episode_length)]) #\Sigma_{t to T} \gamme^(t'-t) r(t')
 
             J += (torch.cat(self.log_probs[k]) * r_to_go).sum()
 
