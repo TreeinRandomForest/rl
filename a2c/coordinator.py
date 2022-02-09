@@ -93,7 +93,10 @@ class Coordinator():
 
         #baseline is just MC average of current episode
         self.current_reward_avg = np.mean(total_rewards_list)
-        self.exp_reward_avg = self.exp_reward_factor*self.exp_reward_avg + (1-self.exp_reward_factor)*self.current_reward_avg
+        if self.iter == 0:
+            self.exp_reward_avg = self.current_reward_avg
+        else:
+            self.exp_reward_avg = self.exp_reward_factor*self.exp_reward_avg + (1-self.exp_reward_factor)*self.current_reward_avg
 
         #backprop and update policy
         J /= len(self.rewards)
